@@ -6,7 +6,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "https://phaser-portfolio.vercel.app/",
+    origin: "*",
   },
 }); //in case server and client run on different urls
 
