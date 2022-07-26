@@ -15,18 +15,23 @@ let players = [];
 io.on("connection", (socket) => {
   console.log("new connexion:", socket.id);
   socket.join("room");
-  const newPlayer = {
-    id: socket.id,
-    position: { x: 160, y: 160 },
-    anim: "idle",
-    flipX: false,
-  };
-  players.push(newPlayer);
-  const otherPlayers = players.filter((player) => {
-    return player.id !== socket.id;
+
+  socket.on("setupPlayer", (data) => {
+    console.log("setupPlayer data :", data);
+    const newPlayer = {
+      id: socket.id,
+      position: data.position,
+      anim: data.anim,
+      flipX: false,
+    };
+    players.push(newPlayer);
+    console.log("added player :", newPlayer);
+    const otherPlayers = players.filter((player) => {
+      return player.id !== socket.id;
+    });
+    socket.emit("initialPlayers", otherPlayers);
+    socket.broadcast.to("room").emit("playerJoin", newPlayer);
   });
-  socket.emit("initialPlayers", otherPlayers);
-  socket.broadcast.to("room").emit("playerJoin", newPlayer);
 
   socket.on("disconnect", () => {
     players = [...players].filter((player) => player.id !== socket.id);
