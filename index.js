@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
   socket.join("room");
   const newPlayer = {
     id: socket.id,
-    position: { x: 200, y: 300 },
+    position: { x: 160, y: 160 },
     anim: "idle",
     flipX: false,
   };
