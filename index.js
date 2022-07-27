@@ -51,6 +51,10 @@ io.on("connection", (socket) => {
     //console.log("Updated players : ", players);
     socket.broadcast.to("room").emit("updatePlayer", updatedPlayer);
   });
+
+  socket.on("newMessage", (data) => {
+    io.to("room").emit("newMessage", data);
+  });
 });
 
 server.listen(PORT, (err) => {
